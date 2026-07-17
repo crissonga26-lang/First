@@ -320,6 +320,69 @@
     .glow {
         text-shadow: 0 0 25px rgba(255, 153, 0, 0.5);
     }
+    <style>
+    .success {
+        background-color: #22c55e !important;
+        color: white !important;
+        font-weight: bold;
+    }
+    .error {
+        border: 2px solid #ef4444 !important;
+        animation: shake 0.4s;
+    }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const forms = document.querySelectorAll('form');
+        
+        forms.forEach(form => {
+            const submitBtn = form.querySelector('input[type="submit"]');
+            
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault(); // Empêche l'envoi normal
+                    
+                    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], textarea');
+                    let isValid = true;
+
+                    inputs.forEach(input => {
+                        if (input.value.trim() === '') {
+                            input.classList.add('error');
+                            isValid = false;
+                        } else {
+                            input.classList.remove('error');
+                        }
+                    });
+
+                    if (!isValid) {
+                        this.value = "Veuillez remplir les champs";
+                        this.style.backgroundColor = "#ef4444";
+                        setTimeout(() => {
+                            this.value = "Envoyer";
+                            this.style.backgroundColor = "";
+                        }, 2500);
+                        return;
+                    }
+
+                    // Succès
+                    this.value = "✓ Succès";
+                    this.classList.add('success');
+                    this.disabled = true;
+
+                    setTimeout(() => {
+                        alert("Message envoyé avec succès !");
+                    }, 500);
+                });
+            }
+        });
+    });
+</script>
 </style>
 <body>
 </html>
